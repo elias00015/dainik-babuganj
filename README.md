@@ -27,22 +27,39 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'SolaimanLipi', Arial, sans-serif; }
         body { background-color: #f0f2f5; color: #333; line-height: 1.6; }
         
-        header { background: linear-gradient(135deg, #b30000, #800000); color: #fff; padding: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        header h1 { font-size: 32px; margin-bottom: 5px; font-weight: bold; letter-spacing: 1px; }
-        header p { font-size: 15px; opacity: 0.9; }
-        .date-time { font-size: 13px; background: rgba(0,0,0,0.2); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        /* বড় ও আকর্ষনীয় হেডার লোগো ডিজাইন */
+        header { 
+            background: linear-gradient(135deg, #b30000, #700000); 
+            color: #fff; 
+            padding: 30px 15px; 
+            text-align: center; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+            border-bottom: 5px solid #ffcc00;
+        }
+        .main-logo { 
+            font-size: 48px; 
+            font-weight: 900; 
+            letter-spacing: 1.5px; 
+            color: #ffffff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+        header p { font-size: 16px; opacity: 0.95; color: #ffeb3b; font-weight: bold; }
+        .date-time { font-size: 14px; background: rgba(0,0,0,0.3); display: inline-block; padding: 6px 18px; border-radius: 20px; margin-top: 12px; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
 
         .container { max-width: 900px; margin: 25px auto; padding: 0 15px; }
         .main-layout { display: flex; flex-wrap: wrap; gap: 20px; }
         .content-area { flex: 1; min-width: 280px; }
-        .sidebar { width: 180px; min-width: 160px; }
+        .sidebar { width: 300px; min-width: 280px; }
 
         @media (max-width: 768px) {
+            .main-logo { font-size: 36px; }
             .sidebar { width: 100%; }
         }
 
         .card { background: #fff; padding: 22px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; border-top: 4px solid #b30000; }
-        .card h3 { color: #b30000; margin-bottom: 15px; font-size: 19px; border-bottom: 2px solid #f0f2f5; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .card h3 { color: #b30000; margin-bottom: 15px; font-size: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 
         input, textarea { width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; background: #fafafa; transition: all 0.3s ease; }
         input:focus, textarea:focus { border-color: #b30000; background: #fff; outline: none; box-shadow: 0 0 5px rgba(179, 0, 0, 0.2); }
@@ -51,11 +68,12 @@
 
         .news-item { border-bottom: 1px solid #eee; padding: 15px 0; }
         .news-item:last-child { border-bottom: none; }
-        .news-item h4 { color: #111; font-size: 18px; margin-bottom: 6px; }
+        .news-item h4 { color: #111; font-size: 19px; margin-bottom: 8px; }
         .news-item a { color: #b30000; text-decoration: none; font-weight: bold; }
         .news-item a:hover { text-decoration: underline; }
-        .news-time { font-size: 12px; color: #887; margin-bottom: 8px; font-style: italic; }
-        .news-item p { color: #444; font-size: 15px; }
+        .news-time { font-size: 12px; color: #777; margin-bottom: 10px; font-style: italic; }
+        .news-img { width: 100%; max-height: 380px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; display: block; }
+        .news-item p { color: #444; font-size: 15px; line-height: 1.6; }
 
         .ad-box { background: #fff; border: 2px dashed #b30000; padding: 15px; text-align: center; color: #b30000; margin: 15px 0; border-radius: 8px; font-size: 13px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.03); word-break: break-all; }
         .fb-post-wrapper { text-align: center; margin-top: 15px; overflow-x: auto; }
@@ -66,7 +84,7 @@
 <body>
 
     <header>
-        <h1>দৈনিক বাবুগঞ্জ</h1>
+        <div class="main-logo">দৈনিক বাবুগঞ্জ</div>
         <p>সত্য ও বস্তুনিষ্ঠ সংবাদ প্রকাশে অঙ্গীকারাবদ্ধ</p>
         <div class="date-time" id="liveDateTime">লোড হচ্ছে...</div>
     </header>
@@ -105,10 +123,11 @@
                     [ Adsterra Banner 468x60: এখানে কোড বসান ]
                 </div>
 
-                <!-- সংবাদ প্রকাশের ফর্ম -->
+                <!-- নতুন সংবাদ প্রকাশের ফর্ম (ছবি সহ) -->
                 <div class="card">
                     <h3>✍️ নতুন সংবাদ প্রকাশ করুন</h3>
                     <input type="text" id="newsTitle" placeholder="খবরের শিরোনাম এখানে লিখুন...">
+                    <input type="text" id="newsImgUrl" placeholder="সংবাদের ছবির লিংক (Image URL) দিন (ঐচ্ছিক)">
                     <textarea id="newsContent" rows="4" placeholder="খবরের বিস্তারিত বিবরণ এখানে লিখুন..."></textarea>
                     <button onclick="publishNews()">প্রকাশ করুন</button>
                 </div>
@@ -213,6 +232,7 @@
 
         function publishNews() {
             const title = document.getElementById('newsTitle').value.trim();
+            const imgUrl = document.getElementById('newsImgUrl').value.trim();
             const content = document.getElementById('newsContent').value.trim();
 
             if(!title || !content) {
@@ -222,6 +242,7 @@
 
             const newsItem = {
                 title: title,
+                imgUrl: imgUrl,
                 content: content,
                 date: new Date().toLocaleString('bn-BD')
             };
@@ -231,6 +252,7 @@
             localStorage.setItem('dainik_babuganj_news', JSON.stringify(allNews));
 
             document.getElementById('newsTitle').value = '';
+            document.getElementById('newsImgUrl').value = '';
             document.getElementById('newsContent').value = '';
 
             loadNews();
@@ -248,10 +270,12 @@
 
             let html = '';
             allNews.forEach(item => {
+                let imgTag = item.imgUrl ? `<img src="${item.imgUrl}" class="news-img" alt="সংবাদের ছবি" onerror="this.style.display='none'">` : '';
                 html += `
                     <div class="news-item">
                         <h4>${item.title}</h4>
                         <div class="news-time">প্রকাশিত: ${item.date}</div>
+                        ${imgTag}
                         <p>${item.content}</p>
                     </div>
                 `;
