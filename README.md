@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -253,6 +254,25 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
       display: flex;
       flex-direction: column;
+      position: relative;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(200, 16, 46, 0.85);
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .delete-btn:hover {
+      background: var(--primary);
     }
 
     .news-img {
@@ -332,7 +352,6 @@
 
     .btn-fb { background: #1877f2; }
     .btn-wa { background: #25d366; }
-    .btn-tw { background: #1da1f2; }
     .btn-copy { background: #4b5563; }
 
     footer {
@@ -468,25 +487,7 @@
     <h3 style="margin: 20px 0 15px 0; border-left: 4px solid var(--primary); padding-left: 8px;">সর্বশেষ সংবাদসমূহ</h3>
     
     <div class="news-feed" id="newsFeed">
-      
-      <!-- Default Sample News 1 -->
-      <div class="news-card" id="post-1">
-        <img src="https://picsum.photos/800/400?random=1" class="news-img" alt="নিউজ ছবি">
-        <div class="news-content">
-          <span class="news-tag">ফেসবুক খবর</span>
-          <div class="news-title">বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট</div>
-          <div class="news-desc">স্থানীয় সংযোগ ব্যবস্থার উন্নয়নে নতুন ব্রিজের কাজ দ্রুত গতিতে এগিয়ে চলছে। আরও বিস্তারিত সংবাদ জানতে নিচের যুক্ত করা ফেসবুক পোস্টে ক্লিক করুন।</div>
-          <div class="news-link-box">
-            🔗 মূল পোস্ট লিংক: <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">https://facebook.com/posts/example123</a>
-          </div>
-          <div class="share-buttons">
-            <button class="share-btn btn-fb" onclick="sharePost('fb', 'https://facebook.com/posts/example123', 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট')">Facebook</button>
-            <button class="share-btn btn-wa" onclick="sharePost('wa', 'https://facebook.com/posts/example123', 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট')">WhatsApp</button>
-            <button class="share-btn btn-copy" onclick="copyPostLink('https://facebook.com/posts/example123')">📋 কপি লিংক</button>
-          </div>
-        </div>
-      </div>
-
+      <!-- Posts will load dynamically from localStorage -->
     </div>
 
   </div>
@@ -557,7 +558,7 @@
       btnElement.classList.add('active');
     }
 
-    // 3. Dynamic News Posting & Unique Link Generation
+    // 3. Persistent LocalStorage Post System
     let uploadedImageBase64 = "";
 
     function previewFileImage(input) {
@@ -568,6 +569,65 @@
         }
         reader.readAsDataURL(input.files[0]);
       }
+    }
+
+    function getStoredPosts() {
+      const posts = localStorage.getItem('babuganj_news_posts');
+      if (posts) {
+        return JSON.parse(posts);
+      }
+      // Default Initial Post if empty
+      return [{
+        id: 'post-1',
+        title: 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট',
+        category: 'ফেসবুক খবর',
+        desc: 'স্থানীয় সংযোগ ব্যবস্থার উন্নয়নে নতুন ব্রিজের কাজ দ্রুত গতিতে এগিয়ে চলছে। আরও বিস্তারিত সংবাদ জানতে নিচের যুক্ত করা ফেসবুক পোস্টে ক্লিক করুন।',
+        externalUrl: 'https://facebook.com/posts/example123',
+        imageSrc: 'https://picsum.photos/800/400?random=1'
+      }];
+    }
+
+    function savePostsToStorage(posts) {
+      localStorage.setItem('babuganj_news_posts', JSON.stringify(posts));
+    }
+
+    function renderPosts() {
+      const feed = document.getElementById('newsFeed');
+      feed.innerHTML = "";
+      const posts = getStoredPosts();
+
+      posts.forEach(post => {
+        const shareLink = post.externalUrl || (window.location.origin + window.location.pathname + '#' + post.id);
+
+        let linkHtml = "";
+        if (post.externalUrl) {
+          linkHtml = `
+            <div class="news-link-box">
+              🔗 মূল পোস্ট লিংক: <a href="${post.externalUrl}" target="_blank" rel="noopener noreferrer">${post.externalUrl}</a>
+            </div>
+          `;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'news-card';
+        card.id = post.id;
+        card.innerHTML = `
+          <button class="delete-btn" onclick="deletePost('${post.id}')">❌ মুছে ফেলুন</button>
+          <img src="${post.imageSrc}" class="news-img" alt="নিউজ ছবি">
+          <div class="news-content">
+            <span class="news-tag">${post.category}</span>
+            <div class="news-title">${post.title}</div>
+            <div class="news-desc">${post.desc}</div>
+            ${linkHtml}
+            <div class="share-buttons">
+              <button class="share-btn btn-fb" onclick="sharePost('fb', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">Facebook</button>
+              <button class="share-btn btn-wa" onclick="sharePost('wa', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">WhatsApp</button>
+              <button class="share-btn btn-copy" onclick="copyPostLink('${shareLink}')">📋 কপি লিংক</button>
+            </div>
+          </div>
+        `;
+        feed.appendChild(card);
+      });
     }
 
     function handlePostSubmit(event) {
@@ -581,45 +641,32 @@
 
       let finalImgSrc = uploadedImageBase64 || imageUrlInput || "https://picsum.photos/800/400?random=" + Math.floor(Math.random() * 100);
 
-      // Generate Unique Post ID for Sharing
-      const postId = 'post-' + Date.now();
-      const currentSiteUrl = window.location.origin + window.location.pathname + '#' + postId;
+      const newPost = {
+        id: 'post-' + Date.now(),
+        title: title,
+        category: category,
+        desc: desc,
+        externalUrl: externalUrl,
+        imageSrc: finalImgSrc
+      };
 
-      let targetShareLink = externalUrl || currentSiteUrl;
-      let linkHtml = "";
-
-      if (externalUrl) {
-        linkHtml = `
-          <div class="news-link-box">
-            🔗 মূল লিংক: <a href="${externalUrl}" target="_blank" rel="noopener noreferrer">${externalUrl}</a>
-          </div>
-        `;
-      }
-
-      const newCard = document.createElement('div');
-      newCard.className = 'news-card';
-      newCard.id = postId;
-      newCard.innerHTML = `
-        <img src="${finalImgSrc}" class="news-img" alt="নিউজ ছবি">
-        <div class="news-content">
-          <span class="news-tag">${category}</span>
-          <div class="news-title">${title}</div>
-          <div class="news-desc">${desc}</div>
-          ${linkHtml}
-          <div class="share-buttons">
-            <button class="share-btn btn-fb" onclick="sharePost('fb', '${targetShareLink}', '${title.replace(/'/g, "\\'")}')">Facebook</button>
-            <button class="share-btn btn-wa" onclick="sharePost('wa', '${targetShareLink}', '${title.replace(/'/g, "\\'")}')">WhatsApp</button>
-            <button class="share-btn btn-copy" onclick="copyPostLink('${targetShareLink}')">📋 কপি লিংক</button>
-          </div>
-        </div>
-      `;
-
-      const feed = document.getElementById('newsFeed');
-      feed.insertBefore(newCard, feed.firstChild);
+      const posts = getStoredPosts();
+      posts.unshift(newPost);
+      savePostsToStorage(posts);
+      renderPosts();
 
       document.getElementById('postForm').reset();
       uploadedImageBase64 = "";
-      alert("সংবাদটি সফলভাবে প্রকাশিত হয়েছে এবং সেয়ার করার জন্য তৈরি!");
+      alert("সংবাদটি স্থায়ীভাবে সেভ ও প্রকাশিত হয়েছে!");
+    }
+
+    function deletePost(id) {
+      if (confirm("আপনি কি নিশ্চিত যে এই সংবাদটি মুছে ফেলতে চান?")) {
+        let posts = getStoredPosts();
+        posts = posts.filter(p => p.id !== id);
+        savePostsToStorage(posts);
+        renderPosts();
+      }
     }
 
     // 4. Public Share & Copy Logic
@@ -640,12 +687,13 @@
           alert("সংবাদের লিংক কপি করা হয়েছে:\n" + link);
         });
       } else {
-        prompt("কপি করতে নিচের লিংকটিতে ক্লিক করে কপি করুন:", link);
+        prompt("কপি করতে নিচের লিংকটিতে ক্লিক করুন:", link);
       }
     }
 
     // Initialize Page
     updateHeaderInfo();
+    renderPosts();
   </script>
 </body>
 </html>
