@@ -176,47 +176,4 @@
             
             let greetingText = "";
             if (hours >= 5 && hours < 12) {
-                greetingText = "☀️ শুভ সকাল! আজকের দিনটি আপনার সুন্দর কাটুক।";
-            } else if (hours >= 12 && hours < 17) {
-                greetingText = "🌤️ শুভ দুপুর! আপনার সময়টি আনন্দদায়ক হোক।";
-            } else if (hours >= 17 && hours < 21) {
-                greetingText = "🌇 শুভ সন্ধ্যা! আপনার সন্ধ্যাটি শুভ হোক।";
-            } else {
-                greetingText = "🌙 শুভ রাত্রি!";
-            }
-            document.getElementById('greetingBanner').innerText = greetingText;
-
-            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-            const engDate = now.toLocaleDateString('bn-BD', options);
-            
-            document.getElementById('fullDateDisplay').innerHTML = `ইংরেজি: ${engDate} <br> বাংলা মাস: কার্তিক ১৪৩৩ <br> হিজরী: রবিউস সানি ১৪৪৮ হি.`;
-        }
-
-        updateDateTimeAndGreetings();
-
-        function handlePost(e) {
-            e.preventDefault();
-            const title = document.getElementById('newsTitle').value;
-            const cat = document.getElementById('newsCat').value;
-            const img = document.getElementById('newsImage').value;
-            const desc = document.getElementById('newsDesc').value;
-
-            const feedContainer = document.getElementById('liveNewsFeed');
-            
-            const newPostHTML = `
-                <div style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
-                    <span style="background: #b30000; color: #fff; padding: 2px 8px; font-size: 12px; border-radius: 3px;">${cat}</span>
-                    <h4 style="margin: 8px 0; color: #222;">${title}</h4>
-                    <img src="${img}" alt="News Image" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">
-                    <p style="font-size: 14px; color: #555;">${desc}</p>
-                    <small style="color: #999;">মাত্র প্রকাশ করা হলো (আফরিন)</small>
-                </div>
-            `;
-
-            feedContainer.insertAdjacentHTML('afterbegin', newPostHTML);
-            alert('সফলভাবে সংবাদ পোস্ট করা হয়েছে!');
-            document.getElementById('postSection').querySelector('form').reset();
-        }
-    </script>
-</body>
-</html>
+                greetingText = "☀️ শুভ সকাল! আজকের দিনটি আপনার সুন্দর কাটুক।";n
