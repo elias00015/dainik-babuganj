@@ -177,3 +177,523 @@
             let greetingText = "";
             if (hours >= 5 && hours < 12) {
                 greetingText = "☀️ শুভ সকাল! আজকের দিনটি আপনার সুন্দর কাটুক।";n
+                <!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দৈনিক বাবুগঞ্জ - অনলাইন নিউজ পোর্টাল</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'SolaimanLipi', Arial, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        header { background: #b30000; color: #fff; padding: 15px 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        header h1 { font-size: 28px; margin-bottom: 5px; }
+        .date-time { font-size: 14px; background: #900; display: inline-block; padding: 3px 10px; border-radius: 4px; margin-top: 5px; }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .card h3 { color: #b30000; margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid #b30000; padding-bottom: 5px; }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 15px; }
+        button { background: #b30000; color: #fff; border: none; padding: 10px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        button:hover { background: #900; }
+        .news-item { border-bottom: 1px solid #eee; padding: 15px 0; }
+        .news-item:last-child { border-bottom: none; }
+        .news-item h4 { color: #222; font-size: 18px; margin-bottom: 5px; }
+        .news-time { font-size: 12px; color: #777; margin-bottom: 8px; }
+        .ad-box { background: #f9f9f9; border: 2px dashed #ccc; padding: 15px; text-align: center; color: #666; margin: 15px 0; border-radius: 6px; font-size: 14px; }
+        .pop-ad-box { background: #fff3f3; border: 2px dashed #d9534f; padding: 15px; text-align: center; color: #a94442; margin: 15px 0; border-radius: 6px; font-size: 14px; }
+        footer { text-align: center; padding: 15px; background: #222; color: #fff; font-size: 14px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>দৈনিক বাবুগঞ্জ</h1>
+        <p>সত্য ও বস্তুনিষ্ঠ সংবাদ প্রকাশে অঙ্গীকারাবদ্ধ</p>
+        <div class="date-time" id="liveDateTime">লোড হচ্ছে...</div>
+    </header>
+
+    <div class="container">
+
+        <!-- বিজ্ঞাপন ১ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 1: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ২ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 1: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- সংবাদ প্রকাশের ফর্ম -->
+        <div class="card">
+            <h3>নতুন সংবাদ প্রকাশ করুন</h3>
+            <input type="text" id="newsTitle" placeholder="খবরের শিরোনাম এখানে লিখুন...">
+            <textarea id="newsContent" rows="4" placeholder="খবরের বিস্তারিত বিবরণ এখানে লিখুন..."></textarea>
+            <button onclick="publishNews()">প্রকাশ করুন</button>
+        </div>
+
+        <!-- বিজ্ঞাপন ৩ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 2: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৪ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 2: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- সর্বশেষ সংবাদ ফিড -->
+        <div class="card">
+            <h3>📢 সর্বশেষ সংবাদ ফিড</h3>
+            <div id="newsFeed">
+                <p style="color: #666; text-align: center;">এখনও কোনো নতুন পোস্ট করা হয়নি। উপরের ফরম থেকে পোস্ট করুন।</p>
+            </div>
+        </div>
+
+        <!-- বিজ্ঞাপন ৫ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 3: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৬ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 3: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- জনপ্রিয় সংবাদ সেকশন -->
+        <div class="card">
+            <h3>🔥 জনপ্রিয় সংবাদ</h3>
+            <div class="news-item">
+                <h4>বাবুগঞ্জে আধুনিক প্রযুক্তিতে কৃষিকাজ শুরু</h4>
+                <div class="news-time">প্রকাশিত: ১ নভেম্বর, ২০২৬</div>
+                <p>আধুনিক যন্ত্রপাতির ব্যবহারের ফলে বাবুগঞ্জের কৃষকদের ফসল উৎপাদনে সময় ও খরচ দুটোই কমে গেছে...</p>
+            </div>
+        </div>
+
+        <!-- বিজ্ঞাপন ৭ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 4: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৮ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 5: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; ২০২৬ দৈনিক বাবুগঞ্জ - সর্বস্বত্ব সংরক্ষিত</p>
+    </footer>
+
+    <script>
+        // লাইভ তারিখ ও সময় দেখানোর জাভাস্ক্রিপ্ট
+        function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('liveDateTime').innerText = now.toLocaleDateString('bn-BD', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // লোকাল স্টোরেজ থেকে সংবাদ লোড ও প্রকাশ করার ফাংশন
+        window.onload = function() {
+            loadNews();
+        };
+
+        function publishNews() {
+            const title = document.getElementById('newsTitle').value.trim();
+            const content = document.getElementById('newsContent').value.trim();
+
+            if(!title || !content) {
+                alert('দয়া করে খবরের শিরোনাম এবং বিস্তারিত উভয়ই লিখুন!');
+                return;
+            }
+
+            const newsItem = {
+                title: title,
+                content: content,
+                date: new Date().toLocaleString('bn-BD')
+            };
+
+            let allNews = JSON.parse(localStorage.getItem('dainik_babuganj_news')) || [];
+            allNews.unshift(newsItem);
+            localStorage.setItem('dainik_babuganj_news', JSON.stringify(allNews));
+
+            document.getElementById('newsTitle').value = '';
+            document.getElementById('newsContent').value = '';
+
+            loadNews();
+            alert('সংবাদটি সফলভাবে প্রকাশিত হয়েছে!');
+        }
+
+        function loadNews() {
+            const feed = document.getElementById('newsFeed');
+            let allNews = JSON.parse(localStorage.getItem('dainik_babuganj_news')) || [];
+
+            if(allNews.length === 0) {
+                feed.innerHTML = '<p style="color: #666; text-align: center;">এখনও কোনো নতুন পোস্ট করা হয়নি। উপরের ফরম থেকে পোস্ট করুন।</p>';
+                return;
+            }
+
+            let html = '';
+            allNews.forEach(item => {
+                html += `
+                    <div class="news-item">
+                        <h4>${item.title}</h4>
+                        <div class="news-time">প্রকাশিত: ${item.date}</div>
+                        <p>${item.content}</p>
+                    </div>
+                `;
+            });
+            feed.innerHTML = html;
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দৈনিক বাবুগঞ্জ - অনলাইন নিউজ পোর্টাল</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'SolaimanLipi', Arial, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        header { background: #b30000; color: #fff; padding: 15px 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        header h1 { font-size: 28px; margin-bottom: 5px; }
+        .date-time { font-size: 14px; background: #900; display: inline-block; padding: 3px 10px; border-radius: 4px; margin-top: 5px; }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .card h3 { color: #b30000; margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid #b30000; padding-bottom: 5px; }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 15px; }
+        button { background: #b30000; color: #fff; border: none; padding: 10px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        button:hover { background: #900; }
+        .news-item { border-bottom: 1px solid #eee; padding: 15px 0; }
+        .news-item:last-child { border-bottom: none; }
+        .news-item h4 { color: #222; font-size: 18px; margin-bottom: 5px; }
+        .news-time { font-size: 12px; color: #777; margin-bottom: 8px; }
+        .ad-box { background: #f9f9f9; border: 2px dashed #ccc; padding: 15px; text-align: center; color: #666; margin: 15px 0; border-radius: 6px; font-size: 14px; }
+        .pop-ad-box { background: #fff3f3; border: 2px dashed #d9534f; padding: 15px; text-align: center; color: #a94442; margin: 15px 0; border-radius: 6px; font-size: 14px; }
+        footer { text-align: center; padding: 15px; background: #222; color: #fff; font-size: 14px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>দৈনিক বাবুগঞ্জ</h1>
+        <p>সত্য ও বস্তুনিষ্ঠ সংবাদ প্রকাশে অঙ্গীকারাবদ্ধ</p>
+        <div class="date-time" id="liveDateTime">লোড হচ্ছে...</div>
+    </header>
+
+    <div class="container">
+
+        <!-- বিজ্ঞাপন ১ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 1: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ২ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 1: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- সংবাদ প্রকাশের ফর্ম -->
+        <div class="card">
+            <h3>নতুন সংবাদ প্রকাশ করুন</h3>
+            <input type="text" id="newsTitle" placeholder="খবরের শিরোনাম এখানে লিখুন...">
+            <textarea id="newsContent" rows="4" placeholder="খবরের বিস্তারিত বিবরণ এখানে লিখুন..."></textarea>
+            <button onclick="publishNews()">প্রকাশ করুন</button>
+        </div>
+
+        <!-- বিজ্ঞাপন ৩ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 2: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৪ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 2: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- সর্বশেষ সংবাদ ফিড -->
+        <div class="card">
+            <h3>📢 সর্বশেষ সংবাদ ফিড</h3>
+            <div id="newsFeed">
+                <p style="color: #666; text-align: center;">এখনও কোনো নতুন পোস্ট করা হয়নি। উপরের ফরম থেকে পোস্ট করুন।</p>
+            </div>
+        </div>
+
+        <!-- বিজ্ঞাপন ৫ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 3: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৬ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 3: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- জনপ্রিয় সংবাদ সেকশন -->
+        <div class="card">
+            <h3>🔥 জনপ্রিয় সংবাদ</h3>
+            <div class="news-item">
+                <h4>বাবুগঞ্জে আধুনিক প্রযুক্তিতে কৃষিকাজ শুরু</h4>
+                <div class="news-time">প্রকাশিত: ১ নভেম্বর, ২০২৬</div>
+                <p>আধুনিক যন্ত্রপাতির ব্যবহারের ফলে বাবুগঞ্জের কৃষকদের ফসল উৎপাদনে সময় ও খরচ দুটোই কমে গেছে...</p>
+            </div>
+        </div>
+
+        <!-- বিজ্ঞাপন ৭ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 4: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৮ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 5: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; ২০২৬ দৈনিক বাবুগঞ্জ - সর্বস্বত্ব সংরক্ষিত</p>
+    </footer>
+
+    <script>
+        // লাইভ তারিখ ও সময় দেখানোর জাভাস্ক্রিপ্ট
+        function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('liveDateTime').innerText = now.toLocaleDateString('bn-BD', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // লোকাল স্টোরেজ থেকে সংবাদ লোড ও প্রকাশ করার ফাংশন
+        window.onload = function() {
+            loadNews();
+        };
+
+        function publishNews() {
+            const title = document.getElementById('newsTitle').value.trim();
+            const content = document.getElementById('newsContent').value.trim();
+
+            if(!title || !content) {
+                alert('দয়া করে খবরের শিরোনাম এবং বিস্তারিত উভয়ই লিখুন!');
+                return;
+            }
+
+            const newsItem = {
+                title: title,
+                content: content,
+                date: new Date().toLocaleString('bn-BD')
+            };
+
+            let allNews = JSON.parse(localStorage.getItem('dainik_babuganj_news')) || [];
+            allNews.unshift(newsItem);
+            localStorage.setItem('dainik_babuganj_news', JSON.stringify(allNews));
+
+            document.getElementById('newsTitle').value = '';
+            document.getElementById('newsContent').value = '';
+
+            loadNews();
+            alert('সংবাদটি সফলভাবে প্রকাশিত হয়েছে!');
+        }
+
+        function loadNews() {
+            const feed = document.getElementById('newsFeed');
+            let allNews = JSON.parse(localStorage.getItem('dainik_babuganj_news')) || [];
+
+            if(allNews.length === 0) {
+                feed.innerHTML = '<p style="color: #666; text-align: center;">এখনও কোনো নতুন পোস্ট করা হয়নি। উপরের ফরম থেকে পোস্ট করুন।</p>';
+                return;
+            }
+
+            let html = '';
+            allNews.forEach(item => {
+                html += `
+                    <div class="news-item">
+                        <h4>${item.title}</h4>
+                        <div class="news-time">প্রকাশিত: ${item.date}</div>
+                        <p>${item.content}</p>
+                    </div>
+                `;
+            });
+            feed.innerHTML = html;
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দৈনিক বাবুগঞ্জ - অনলাইন নিউজ পোর্টাল</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'SolaimanLipi', Arial, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        header { background: #b30000; color: #fff; padding: 15px 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        header h1 { font-size: 28px; margin-bottom: 5px; }
+        .date-time { font-size: 14px; background: #900; display: inline-block; padding: 3px 10px; border-radius: 4px; margin-top: 5px; }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .card h3 { color: #b30000; margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid #b30000; padding-bottom: 5px; }
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 15px; }
+        button { background: #b30000; color: #fff; border: none; padding: 10px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        button:hover { background: #900; }
+        .news-item { border-bottom: 1px solid #eee; padding: 15px 0; }
+        .news-item:last-child { border-bottom: none; }
+        .news-item h4 { color: #222; font-size: 18px; margin-bottom: 5px; }
+        .news-time { font-size: 12px; color: #777; margin-bottom: 8px; }
+        .ad-box { background: #f9f9f9; border: 2px dashed #ccc; padding: 15px; text-align: center; color: #666; margin: 15px 0; border-radius: 6px; font-size: 14px; }
+        .pop-ad-box { background: #fff3f3; border: 2px dashed #d9534f; padding: 15px; text-align: center; color: #a94442; margin: 15px 0; border-radius: 6px; font-size: 14px; }
+        footer { text-align: center; padding: 15px; background: #222; color: #fff; font-size: 14px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>দৈনিক বাবুগঞ্জ</h1>
+        <p>সত্য ও বস্তুনিষ্ঠ সংবাদ প্রকাশে অঙ্গীকারাবদ্ধ</p>
+        <div class="date-time" id="liveDateTime">লোড হচ্ছে...</div>
+    </header>
+
+    <div class="container">
+
+        <!-- বিজ্ঞাপন ১ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 1: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ২ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 1: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- সংবাদ প্রকাশের ফর্ম -->
+        <div class="card">
+            <h3>নতুন সংবাদ প্রকাশ করুন</h3>
+            <input type="text" id="newsTitle" placeholder="খবরের শিরোনাম এখানে লিখুন...">
+            <textarea id="newsContent" rows="4" placeholder="খবরের বিস্তারিত বিবরণ এখানে লিখুন..."></textarea>
+            <button onclick="publishNews()">প্রকাশ করুন</button>
+        </div>
+
+        <!-- বিজ্ঞাপন ৩ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 2: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৪ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 2: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- সর্বশেষ সংবাদ ফিড -->
+        <div class="card">
+            <h3>📢 সর্বশেষ সংবাদ ফিড</h3>
+            <div id="newsFeed">
+                <p style="color: #666; text-align: center;">এখনও কোনো নতুন পোস্ট করা হয়নি। উপরের ফরম থেকে পোস্ট করুন।</p>
+            </div>
+        </div>
+
+        <!-- বিজ্ঞাপন ৫ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 3: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৬ (ব্যানার) -->
+        <div class="ad-box">
+            [ Adsterra Banner Ad 3: এখানে ব্যানার কোড দিন ]
+        </div>
+
+        <!-- জনপ্রিয় সংবাদ সেকশন -->
+        <div class="card">
+            <h3>🔥 জনপ্রিয় সংবাদ</h3>
+            <div class="news-item">
+                <h4>বাবুগঞ্জে আধুনিক প্রযুক্তিতে কৃষিকাজ শুরু</h4>
+                <div class="news-time">প্রকাশিত: ১ নভেম্বর, ২০২৬</div>
+                <p>আধুনিক যন্ত্রপাতির ব্যবহারের ফলে বাবুগঞ্জের কৃষকদের ফসল উৎপাদনে সময় ও খরচ দুটোই কমে গেছে...</p>
+            </div>
+        </div>
+
+        <!-- বিজ্ঞাপন ৭ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 4: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+        <!-- বিজ্ঞাপন ৮ (পপআপ / পপন্ডার / সোশ্যাল বার) -->
+        <div class="pop-ad-box">
+            [ Adsterra Popunder / Social Bar 5: এখানে পপ অ্যাড কোড দিন ]
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; ২০২৬ দৈনিক বাবুগঞ্জ - সর্বস্বত্ব সংরক্ষিত</p>
+    </footer>
+
+    <script>
+        // লাইভ তারিখ ও সময় দেখানোর জাভাস্ক্রিপ্ট
+        function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('liveDateTime').innerText = now.toLocaleDateString('bn-BD', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // লোকাল স্টোরেজ থেকে সংবাদ লোড ও প্রকাশ করার ফাংশন
+        window.onload = function() {
+            loadNews();
+        };
+
+        function publishNews() {
+            const title = document.getElementById('newsTitle').value.trim();
+            const content = document.getElementById('newsContent').value.trim();
+
+            if(!title || !content) {
+                alert('দয়া করে খবরের শিরোনাম এবং বিস্তারিত উভয়ই লিখুন!');
+                return;
+            }
+
+            const newsItem = {
+                title: title,
+                content: content,
+                date: new Date().toLocaleString('bn-BD')
+            };
+
+            let allNews = JSON.parse(localStorage.getItem('dainik_babuganj_news')) || [];
+            allNews.unshift(newsItem);
+            localStorage.setItem('dainik_babuganj_news', JSON.stringify(allNews));
+
+            document.getElementById('newsTitle').value = '';
+            document.getElementById('newsContent').value = '';
+
+            loadNews();
+            alert('সংবাদটি সফলভাবে প্রকাশিত হয়েছে!');
+        }
+
+        function loadNews() {
+            const feed = document.getElementById('newsFeed');
+            let allNews = JSON.parse(localStorage.getItem('dainik_babuganj_news')) || [];
+
+            if(allNews.length === 0) {
+                feed.innerHTML = '<p style="color: #666; text-align: center;">এখনও কোনো নতুন পোস্ট করা হয়নি। উপরের ফরম থেকে পোস্ট করুন।</p>';
+                return;
+            }
+
+            let html = '';
+            allNews.forEach(item => {
+                html += `
+                    <div class="news-item">
+                        <h4>${item.title}</h4>
+                        <div class="news-time">প্রকাশিত: ${item.date}</div>
+                        <p>${item.content}</p>
+                    </div>
+                `;
+            });
+            feed.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
