@@ -41,11 +41,6 @@
       align-items: center;
     }
 
-    .ad-728x90 {
-      min-height: 90px;
-      max-width: 728px;
-    }
-
     .ad-300x250 {
       min-height: 250px;
       width: 300px;
@@ -68,7 +63,7 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      max-width: 1200px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
@@ -118,15 +113,16 @@
     }
 
     .nav-container {
-      max-width: 1200px;
+      max-width: 800px;
       margin: 0 auto;
       display: flex;
+      justify-content: center;
       overflow-x: auto;
     }
 
     .nav-container a {
       color: white;
-      padding: 12px 20px;
+      padding: 12px 18px;
       text-decoration: none;
       white-space: nowrap;
       font-size: 1rem;
@@ -136,20 +132,11 @@
       background: var(--primary);
     }
 
-    /* Main Container Grid */
-    .container {
-      max-width: 1200px;
+    /* Main Centered Container Layout */
+    .main-wrapper {
+      max-width: 760px;
       margin: 20px auto;
       padding: 0 15px;
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
     }
 
     /* Live TV Section */
@@ -166,6 +153,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .tv-buttons {
@@ -250,11 +239,11 @@
       width: 100%;
     }
 
-    /* News Feed Grid */
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+    /* News Feed Centered List */
+    .news-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
     }
 
     .news-card {
@@ -268,50 +257,47 @@
 
     .news-img {
       width: 100%;
-      height: 180px;
+      max-height: 380px;
       object-fit: cover;
       background: #e5e7eb;
     }
 
     .news-content {
-      padding: 15px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
+      padding: 20px;
     }
 
     .news-tag {
       font-size: 0.75rem;
       background: #fee2e2;
       color: var(--primary);
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 4px;
       width: fit-content;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       font-weight: bold;
     }
 
     .news-title {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       font-weight: bold;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       line-height: 1.4;
     }
 
     .news-desc {
-      font-size: 0.9rem;
-      color: #4b5563;
-      margin-bottom: 12px;
-      flex-grow: 1;
+      font-size: 0.95rem;
+      color: #374151;
+      margin-bottom: 15px;
+      white-space: pre-line;
     }
 
     .news-link-box {
       background: #f3f4f6;
       border: 1px solid #d1d5db;
-      padding: 8px 10px;
+      padding: 10px;
       border-radius: 6px;
-      font-size: 0.85rem;
-      margin-bottom: 12px;
+      font-size: 0.88rem;
+      margin-bottom: 15px;
       word-break: break-all;
     }
 
@@ -323,28 +309,30 @@
 
     .share-buttons {
       display: flex;
-      gap: 6px;
+      gap: 10px;
       border-top: 1px solid var(--border);
-      padding-top: 10px;
+      padding-top: 12px;
     }
 
     .share-btn {
       flex: 1;
-      padding: 6px;
+      padding: 8px;
       border: none;
       border-radius: 4px;
       color: white;
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       cursor: pointer;
       text-align: center;
       text-decoration: none;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-weight: bold;
     }
 
     .btn-fb { background: #1877f2; }
     .btn-wa { background: #25d366; }
+    .btn-tw { background: #1da1f2; }
     .btn-copy { background: #4b5563; }
 
     footer {
@@ -372,7 +360,7 @@
     </div>
   </div>
 
-  <!-- Adsterra Header Banner Spot (468x60 বসানো হলো) -->
+  <!-- Adsterra Header Banner Spot (468x60) -->
   <div class="ad-container ad-468x60">
     <script>
       atOptions = {
@@ -401,128 +389,109 @@
       <a href="#">রাজনীতি</a>
       <a href="#">খেলাধুলা</a>
       <a href="#">বিনোদন</a>
-      <a href="#">প্রযুক্তি</a>
     </div>
   </nav>
 
-  <div class="container">
-    <!-- Left Column (News Feed & Live TV) -->
-    <main>
-      <!-- Live TV Player -->
-      <section class="tv-section">
-        <div class="tv-header">
-          <h3>🔴 লাইভ টিভি স্ট্রিমিং</h3>
-          <div class="tv-buttons">
-            <button class="tv-btn active" onclick="changeChannel('jamuna', this)">Jamuna TV</button>
-            <button class="tv-btn" onclick="changeChannel('dbc', this)">DBC News</button>
-            <button class="tv-btn" onclick="changeChannel('somoy', this)">Somoy TV</button>
-          </div>
+  <!-- Centered Main Content -->
+  <div class="main-wrapper">
+    
+    <!-- Live TV Player -->
+    <section class="tv-section">
+      <div class="tv-header">
+        <h3>🔴 লাইভ টিভি স্ট্রিমিং</h3>
+        <div class="tv-buttons">
+          <button class="tv-btn active" onclick="changeChannel('jamuna', this)">Jamuna TV</button>
+          <button class="tv-btn" onclick="changeChannel('dbc', this)">DBC News</button>
+          <button class="tv-btn" onclick="changeChannel('somoy', this)">Somoy TV</button>
         </div>
-        <div class="iframe-container">
-          <iframe id="tvIframe" src="https://www.youtube.com/embed/live_stream?channel=UCjH5l0jR3F-Wq8CjT5B4Xsw" allowfullscreen></iframe>
-        </div>
-      </section>
+      </div>
+      <div class="iframe-container">
+        <iframe id="tvIframe" src="https://www.youtube.com/embed/live_stream?channel=UCjH5l0jR3F-Wq8CjT5B4Xsw" allowfullscreen></iframe>
+      </div>
+    </section>
 
-      <!-- News Articles Grid -->
-      <h3 style="margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 8px;">সর্বশেষ সংবাদ</h3>
-      <div class="news-grid" id="newsGrid">
+    <!-- Post Upload Section (Centered) -->
+    <div class="post-form-card">
+      <h3>➕ নতুন খবর প্রকাশ করুন</h3>
+      <form id="postForm" onsubmit="handlePostSubmit(event)">
+        <div class="form-group">
+          <label>সংবাদের শিরোনাম</label>
+          <input type="text" id="postTitle" placeholder="শিরোনাম লিখুন..." required>
+        </div>
+        <div class="form-group">
+          <label>ক্যাটাগরি</label>
+          <select id="postCategory">
+            <option value="বাবুগঞ্জ">বাবুগঞ্জ</option>
+            <option value="ফেসবুক খবর">ফেসবুক খবর</option>
+            <option value="জাতীয়">জাতীয়</option>
+            <option value="রাজনীতি">রাজনীতি</option>
+            <option value="খেলাধুলা">খেলাধুলা</option>
+          </select>
+        </div>
         
-        <!-- Default Post 1 With External Link -->
-        <div class="news-card">
-          <img src="https://picsum.photos/400/250?random=1" class="news-img" alt="নিউজ ছবি">
-          <div class="news-content">
-            <span class="news-tag">ফেসবুক খবর</span>
-            <div class="news-title">বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট</div>
-            <div class="news-desc">সেতু সংক্রান্ত ফেসবুক পোস্টের বিস্তারিত তথ্য দেখতে নিচের লিংকে ক্লিক করুন।</div>
-            <div class="news-link-box">
-              🔗 মূল লিংক: <a href="https://facebook.com" target="_blank">https://facebook.com/posts/example123</a>
-            </div>
-            <div class="share-buttons">
-              <button class="share-btn btn-fb" onclick="shareSocial('fb', 'https://facebook.com/posts/example123')">FB</button>
-              <button class="share-btn btn-wa" onclick="shareSocial('wa', 'https://facebook.com/posts/example123')">WA</button>
-              <button class="share-btn btn-copy" onclick="copyLink('https://facebook.com/posts/example123')">📋 কপি</button>
-            </div>
-          </div>
+        <!-- External / Facebook Link Input -->
+        <div class="form-group">
+          <label>ফেসবুক বা ওয়েবসাইটের লিংক (অপশনাল)</label>
+          <input type="url" id="postExternalUrl" placeholder="https://facebook.com/post/...">
         </div>
 
-        <!-- Default Post 2 -->
-        <div class="news-card">
-          <img src="https://picsum.photos/400/250?random=2" class="news-img" alt="নিউজ ছবি">
-          <div class="news-content">
-            <span class="news-tag">জাতীয়</span>
-            <div class="news-title">ডিজিটাল প্রযুক্তিতে আরও এক ধাপ এগিয়ে বাংলাদেশ</div>
-            <div class="news-desc">সারাদেশে হাই-স্পিড ইন্টারনেট পৌঁছে দিতে নতুন প্রকল্প হাতে নিয়েছে আইসিটি বিভাগ...</div>
-            <div class="share-buttons">
-              <button class="share-btn btn-fb" onclick="shareSocial('fb', window.location.href)">FB</button>
-              <button class="share-btn btn-wa" onclick="shareSocial('wa', window.location.href)">WA</button>
-              <button class="share-btn btn-copy" onclick="copyLink(window.location.href)">📋 কপি</button>
-            </div>
-          </div>
+        <div class="form-group">
+          <label>ছবি (আপলোড করুন অথবা ছবির URL দিন)</label>
+          <input type="file" id="postImageFile" accept="image/*" onchange="previewFileImage(this)">
+          <input type="url" id="postImageUrl" placeholder="অথবা ছবির লিংক দিন..." style="margin-top: 6px;">
         </div>
 
-      </div>
-    </main>
+        <div class="form-group">
+          <label>সংবাদের বিস্তারিত বিবরণ</label>
+          <textarea id="postDesc" rows="4" placeholder="বিস্তারিত সংবাদ লিখুন..." required></textarea>
+        </div>
 
-    <!-- Right Sidebar (Post Upload Form & Ad Spots) -->
-    <aside>
-      <!-- Post Upload Section -->
-      <div class="post-form-card">
-        <h3>➕ সংবাদ পোস্ট ও লিংক যোগ করুন</h3>
-        <form id="postForm" onsubmit="handlePostSubmit(event)">
-          <div class="form-group">
-            <label>সংবাদের শিরোনাম</label>
-            <input type="text" id="postTitle" placeholder="শিরোনাম লিখুন..." required>
-          </div>
-          <div class="form-group">
-            <label>ক্যাটাগরি</label>
-            <select id="postCategory">
-              <option value="বাবুগঞ্জ">বাবুগঞ্জ</option>
-              <option value="ফেসবুক খবর">ফেসবুক খবর</option>
-              <option value="জাতীয়">জাতীয়</option>
-              <option value="রাজনীতি">রাজনীতি</option>
-              <option value="খেলাধুলা">খেলাধুলা</option>
-            </select>
-          </div>
-          
-          <!-- External / Facebook Link Input -->
-          <div class="form-group">
-            <label>ফেসবুক বা খবরের লিংক (অপশনাল)</label>
-            <input type="url" id="postExternalUrl" placeholder="https://facebook.com/post/...">
-          </div>
+        <button type="submit" class="btn-submit">পাবলিশ করুন</button>
+      </form>
+    </div>
 
-          <div class="form-group">
-            <label>ছবি (URL অথবা লোকাল ফাইল আপলোড)</label>
-            <input type="file" id="postImageFile" accept="image/*" onchange="previewFileImage(this)">
-            <input type="url" id="postImageUrl" placeholder="অথবা ছবির URL দিন..." style="margin-top: 6px;">
+    <!-- Adsterra 300x250 Ad Spot -->
+    <div class="ad-container ad-300x250">
+      <script>
+        atOptions = {
+          'key' : '6b87b36dbcafdff41c2109cc4b9863e0',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highrevenueformat.com/6b87b36dbcafdff41c2109cc4b9863e0/invoke.js"></script>
+    </div>
+
+    <!-- News Articles Feed (Centered) -->
+    <h3 style="margin: 20px 0 15px 0; border-left: 4px solid var(--primary); padding-left: 8px;">সর্বশেষ সংবাদসমূহ</h3>
+    
+    <div class="news-feed" id="newsFeed">
+      
+      <!-- Default Sample News 1 -->
+      <div class="news-card" id="post-1">
+        <img src="https://picsum.photos/800/400?random=1" class="news-img" alt="নিউজ ছবি">
+        <div class="news-content">
+          <span class="news-tag">ফেসবুক খবর</span>
+          <div class="news-title">বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট</div>
+          <div class="news-desc">স্থানীয় সংযোগ ব্যবস্থার উন্নয়নে নতুন ব্রিজের কাজ দ্রুত গতিতে এগিয়ে চলছে। আরও বিস্তারিত সংবাদ জানতে নিচের যুক্ত করা ফেসবুক পোস্টে ক্লিক করুন।</div>
+          <div class="news-link-box">
+            🔗 মূল পোস্ট লিংক: <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">https://facebook.com/posts/example123</a>
           </div>
-
-          <div class="form-group">
-            <label>সংবাদের বিবরণ</label>
-            <textarea id="postDesc" rows="4" placeholder="বিস্তারিত লিখুন..." required></textarea>
+          <div class="share-buttons">
+            <button class="share-btn btn-fb" onclick="sharePost('fb', 'https://facebook.com/posts/example123', 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট')">Facebook</button>
+            <button class="share-btn btn-wa" onclick="sharePost('wa', 'https://facebook.com/posts/example123', 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট')">WhatsApp</button>
+            <button class="share-btn btn-copy" onclick="copyPostLink('https://facebook.com/posts/example123')">📋 কপি লিংক</button>
           </div>
-
-          <button type="submit" class="btn-submit">পাবলিশ করুন</button>
-        </form>
-      </div>
-
-      <!-- Sidebar Adsterra Square Ad (300x250 বসানো হলো) -->
-      <div class="ad-container ad-300x250">
-        <script>
-          atOptions = {
-            'key' : '6b87b36dbcafdff41c2109cc4b9863e0',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-          };
-        </script>
-        <script src="https://www.highrevenueformat.com/6b87b36dbcafdff41c2109cc4b9863e0/invoke.js"></script>
+        </div>
       </div>
 
-    </aside>
+    </div>
+
   </div>
 
-  <!-- পপআন্ডার / সোশ্যাল বার স্ক্রিপ্ট এখানে বসানো হলো -->
+  <!-- Popunder / Social Bar Script -->
   <script src="https://pl32138751.profitableratecpmnetwork.com/23/9c/9f/239c9f7331d72f15bdcaae548e54c5f5.js"></script>
 
   <footer>
@@ -588,7 +557,7 @@
       btnElement.classList.add('active');
     }
 
-    // 3. News Posting with Link Feature
+    // 3. Dynamic News Posting & Unique Link Generation
     let uploadedImageBase64 = "";
 
     function previewFileImage(input) {
@@ -610,10 +579,14 @@
       const externalUrl = document.getElementById('postExternalUrl').value;
       const imageUrlInput = document.getElementById('postImageUrl').value;
 
-      let finalImgSrc = uploadedImageBase64 || imageUrlInput || "https://picsum.photos/400/250?random=" + Math.floor(Math.random() * 100);
+      let finalImgSrc = uploadedImageBase64 || imageUrlInput || "https://picsum.photos/800/400?random=" + Math.floor(Math.random() * 100);
 
+      // Generate Unique Post ID for Sharing
+      const postId = 'post-' + Date.now();
+      const currentSiteUrl = window.location.origin + window.location.pathname + '#' + postId;
+
+      let targetShareLink = externalUrl || currentSiteUrl;
       let linkHtml = "";
-      let targetLink = externalUrl || window.location.href;
 
       if (externalUrl) {
         linkHtml = `
@@ -625,6 +598,7 @@
 
       const newCard = document.createElement('div');
       newCard.className = 'news-card';
+      newCard.id = postId;
       newCard.innerHTML = `
         <img src="${finalImgSrc}" class="news-img" alt="নিউজ ছবি">
         <div class="news-content">
@@ -633,37 +607,40 @@
           <div class="news-desc">${desc}</div>
           ${linkHtml}
           <div class="share-buttons">
-            <button class="share-btn btn-fb" onclick="shareSocial('fb', '${targetLink}')">FB</button>
-            <button class="share-btn btn-wa" onclick="shareSocial('wa', '${targetLink}')">WA</button>
-            <button class="share-btn btn-copy" onclick="copyLink('${targetLink}')">📋 কপি</button>
+            <button class="share-btn btn-fb" onclick="sharePost('fb', '${targetShareLink}', '${title.replace(/'/g, "\\'")}')">Facebook</button>
+            <button class="share-btn btn-wa" onclick="sharePost('wa', '${targetShareLink}', '${title.replace(/'/g, "\\'")}')">WhatsApp</button>
+            <button class="share-btn btn-copy" onclick="copyPostLink('${targetShareLink}')">📋 কপি লিংক</button>
           </div>
         </div>
       `;
 
-      const grid = document.getElementById('newsGrid');
-      grid.insertBefore(newCard, grid.firstChild);
+      const feed = document.getElementById('newsFeed');
+      feed.insertBefore(newCard, feed.firstChild);
 
       document.getElementById('postForm').reset();
       uploadedImageBase64 = "";
-      alert("সংবাদটি সফলভাবে লিংক সহ প্রকাশিত হয়েছে!");
+      alert("সংবাদটি সফলভাবে প্রকাশিত হয়েছে এবং সেয়ার করার জন্য তৈরি!");
     }
 
-    // 4. Link Copy & Sharing Options
-    function copyLink(link) {
-      navigator.clipboard.writeText(link).then(() => {
-        alert("লিংকটি কপি করা হয়েছে:\n" + link);
-      }).catch(() => {
-        prompt("কপি করতে নিচের লিংকটি সিলেক্ট করুন:", link);
-      });
-    }
-
-    function shareSocial(platform, link) {
-      const url = encodeURIComponent(link);
+    // 4. Public Share & Copy Logic
+    function sharePost(platform, link, title) {
+      const shareUrl = encodeURIComponent(link);
+      const shareText = encodeURIComponent(title);
 
       if (platform === 'fb') {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, '_blank');
       } else if (platform === 'wa') {
-        window.open(`https://api.whatsapp.com/send?text=${url}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`, '_blank');
+      }
+    }
+
+    function copyPostLink(link) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(() => {
+          alert("সংবাদের লিংক কপি করা হয়েছে:\n" + link);
+        });
+      } else {
+        prompt("কপি করতে নিচের লিংকটিতে ক্লিক করে কপি করুন:", link);
       }
     }
 
