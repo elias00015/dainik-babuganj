@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -455,9 +454,9 @@
         </div>
 
         <div class="form-group">
-          <label>ছবি (আপলোড করুন অথবা ছবির URL দিন)</label>
-          <input type="file" id="postImageFile" accept="image/*" onchange="previewFileImage(this)">
-          <input type="url" id="postImageUrl" placeholder="অথবা ছবির লিংক দিন..." style="margin-top: 6px;">
+          <label>ছবি (গ্যালারি ফাইল বা ছবির লিংক)</label>
+          <input type="file" id="postImageFile" accept="image/*" onchange="previewAndCompressImage(this)">
+          <input type="url" id="postImageUrl" placeholder="অথবা ছবির লিংক (URL) দিন..." style="margin-top: 6px;">
         </div>
 
         <div class="form-group">
@@ -487,7 +486,7 @@
     <h3 style="margin: 20px 0 15px 0; border-left: 4px solid var(--primary); padding-left: 8px;">সর্বশেষ সংবাদসমূহ</h3>
     
     <div class="news-feed" id="newsFeed">
-      <!-- Posts will load dynamically from localStorage -->
+      <!-- Posts will load dynamically -->
     </div>
 
   </div>
@@ -558,37 +557,60 @@
       btnElement.classList.add('active');
     }
 
-    // 3. Persistent LocalStorage Post System
+    // 3. Image Compression Logic (Prevents Storage Overload)
     let uploadedImageBase64 = "";
 
-    function previewFileImage(input) {
+    function previewAndCompressImage(input) {
       if (input.files && input.files[0]) {
+        const file = input.files[0];
         const reader = new FileReader();
+
         reader.onload = function(e) {
-          uploadedImageBase64 = e.target.result;
-        }
-        reader.readAsDataURL(input.files[0]);
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = function() {
+            // Compress Image size using Canvas
+            const canvas = document.createElement('canvas');
+            const maxWidth = 600;
+            const scaleSize = maxWidth / img.width;
+            canvas.width = maxWidth;
+            canvas.height = img.height * scaleSize;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Compress to JPEG with 0.6 quality
+            uploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
+          };
+        };
+        reader.readAsDataURL(file);
       }
     }
 
+    // 4. Safe Local Storage System
     function getStoredPosts() {
-      const posts = localStorage.getItem('babuganj_news_posts');
-      if (posts) {
-        return JSON.parse(posts);
+      try {
+        const posts = localStorage.getItem('babuganj_news_posts_v2');
+        if (posts) return JSON.parse(posts);
+      } catch (e) {
+        console.error("Storage Error", e);
       }
-      // Default Initial Post if empty
       return [{
-        id: 'post-1',
+        id: 'post-default',
         title: 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট',
         category: 'ফেসবুক খবর',
         desc: 'স্থানীয় সংযোগ ব্যবস্থার উন্নয়নে নতুন ব্রিজের কাজ দ্রুত গতিতে এগিয়ে চলছে। আরও বিস্তারিত সংবাদ জানতে নিচের যুক্ত করা ফেসবুক পোস্টে ক্লিক করুন।',
-        externalUrl: 'https://facebook.com/posts/example123',
+        externalUrl: 'https://facebook.com',
         imageSrc: 'https://picsum.photos/800/400?random=1'
       }];
     }
 
     function savePostsToStorage(posts) {
-      localStorage.setItem('babuganj_news_posts', JSON.stringify(posts));
+      try {
+        localStorage.setItem('babuganj_news_posts_v2', JSON.stringify(posts));
+      } catch (e) {
+        alert("স্টোরেজ লিমিট পার হয়েছে! কিছু পুরনো পোস্ট মুছে আবার নতুন পোস্ট করার চেষ্টা করুন।");
+      }
     }
 
     function renderPosts() {
@@ -603,7 +625,7 @@
         if (post.externalUrl) {
           linkHtml = `
             <div class="news-link-box">
-              🔗 মূল পোস্ট লিংক: <a href="${post.externalUrl}" target="_blank" rel="noopener noreferrer">${post.externalUrl}</a>
+              🔗 মূল লিংক: <a href="${post.externalUrl}" target="_blank" rel="noopener noreferrer">${post.externalUrl}</a>
             </div>
           `;
         }
@@ -657,7 +679,7 @@
 
       document.getElementById('postForm').reset();
       uploadedImageBase64 = "";
-      alert("সংবাদটি স্থায়ীভাবে সেভ ও প্রকাশিত হয়েছে!");
+      alert("সংবাদটি স্থায়ীভাবে সেভ হয়েছে! পেজ রিফ্রেশ দিলেও এটি মুছে যাবে না।");
     }
 
     function deletePost(id) {
@@ -669,7 +691,7 @@
       }
     }
 
-    // 4. Public Share & Copy Logic
+    // 5. Public Share & Copy Logic
     function sharePost(platform, link, title) {
       const shareUrl = encodeURIComponent(link);
       const shareText = encodeURIComponent(title);
