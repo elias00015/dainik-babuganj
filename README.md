@@ -1,13 +1,12 @@
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>বাবুগঞ্জ বার্তা - সত্য ও সাহসের সাথে</title>
-  
-  <!-- Firebase SDK লাইব্রেরি সংযুক্ত করা হলো, যা সবার ফোনে এক সাথে নিউজ লাইভ দেখাবে -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Adsterra Popunder / Direct Pop-up Script Header-এ বসানো হলো (যাতে ভিজিটর ক্লিকেই চালু হয়) -->
+  <script type="text/javascript" src="https://pl32138751.profitableratecpmnetwork.com/23/9c/9f/239c9f7331d72f15bdcaae548e54c5f5.js"></script>
 
   <style>
     :root {
@@ -213,7 +212,7 @@
       border-radius: 4px;
     }
 
-    /* News Post Form (Hidden by default for visitors) */
+    /* Post Upload Section (Hidden for visitors) */
     .post-form-card {
       background: white;
       padding: 20px;
@@ -410,9 +409,9 @@
     </div>
   </div>
 
-  <!-- Adsterra Header Banner Spot (468x60) -->
+  <!-- Adsterra Banner (468x60) Spot -->
   <div class="ad-container ad-468x60">
-    <script>
+    <script type="text/javascript">
       atOptions = {
         'key' : '866f6c699bd9fce63d3e0bfd5b973b1e',
         'format' : 'iframe',
@@ -421,10 +420,10 @@
         'params' : {}
       };
     </script>
-    <script src="https://www.highrevenueformat.com/866f6c699bd9fce63d3e0bfd5b973b1e/invoke.js"></script>
+    <script type="text/javascript" src="https://www.highrevenueformat.com/866f6c699bd9fce63d3e0bfd5b973b1e/invoke.js"></script>
   </div>
 
-  <!-- Site Title -->
+  <!-- Site Title Header -->
   <header class="brand-header">
     <button class="admin-login-trigger" onclick="unlockAdminPanel()">⚙️ অ্যাডমিন লগইন</button>
     <h1>বাবুগঞ্জ বার্তা</h1>
@@ -461,7 +460,7 @@
       </div>
     </section>
 
-    <!-- Post Upload Section (Hidden for visitors) -->
+    <!-- Post Upload Section (Admin Password Protected) -->
     <div class="post-form-card" id="adminPostForm">
       <h3>
         <span>➕ নতুন খবর প্রকাশ করুন (অ্যাডমিন প্যানেল)</span>
@@ -489,8 +488,9 @@
         </div>
 
         <div class="form-group">
-          <label>ছবি (ছবির লিংক বা URL দিন - সরাসরি লাইভ দেখার জন্য)</label>
-          <input type="url" id="postImageUrl" placeholder="https://example.com/image.jpg" required style="margin-top: 6px;">
+          <label>ছবি (গ্যালারি থেকে ছবি সিলেক্ট করুন)</label>
+          <input type="file" id="postImageFile" accept="image/*" onchange="previewAndCompressImage(this)" required>
+          <input type="hidden" id="postImageDataBase">
         </div>
 
         <div class="form-group">
@@ -498,13 +498,13 @@
           <textarea id="postDesc" rows="4" placeholder="বিস্তারিত সংবাদ লিখুন..." required></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">সবার স্ক্রিনে পাবলিশ করুন</button>
+        <button type="submit" class="btn-submit">পাবলিশ করুন</button>
       </form>
     </div>
 
-    <!-- Adsterra 300x250 Ad Spot -->
+    <!-- Adsterra Square (300x250) Banner Spot -->
     <div class="ad-container ad-300x250">
-      <script>
+      <script type="text/javascript">
         atOptions = {
           'key' : '6b87b36dbcafdff41c2109cc4b9863e0',
           'format' : 'iframe',
@@ -513,34 +513,27 @@
           'params' : {}
         };
       </script>
-      <script src="https://www.highrevenueformat.com/6b87b36dbcafdff41c2109cc4b9863e0/invoke.js"></script>
+      <script type="text/javascript" src="https://www.highrevenueformat.com/6b87b36dbcafdff41c2109cc4b9863e0/invoke.js"></script>
     </div>
 
-    <!-- News Articles Feed (Centered) -->
+    <!-- News Feed -->
     <h3 style="margin: 20px 0 15px 0; border-left: 4px solid var(--primary); padding-left: 8px;">সর্বশেষ সংবাদসমূহ</h3>
     
     <div class="news-feed" id="newsFeed">
-      <!-- রিয়েলটাইম নিউজ লোড হবে -->
+      <!-- Posts Will Render Here -->
     </div>
 
   </div>
-
-  <!-- Popunder / Social Bar Script -->
-  <script src="https://pl32138751.profitableratecpmnetwork.com/23/9c/9f/239c9f7331d72f15bdcaae548e54c5f5.js"></script>
 
   <footer>
     <p>&copy; ২০২৬ বাবুগঞ্জ বার্তা | সর্বস্বত্ব সংরক্ষিত</p>
   </footer>
 
-  <script>
-    // --- FIREBASE CONFIGURATION (সবার স্ক্রিনে লাইভ দেখানোর জন্য ক্লাউড ডেটাবেস) ---
-    const firebaseConfig = {
-      databaseURL: "https://babuganj-vartaa-default-rtdb.firebaseio.com/" // আপনার ফ্রি রিয়েলটাইম ডেটাবেস লিংক
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+  <!-- 2nd Backup Script Call for Popunder Ad Triggering on Any Click -->
+  <script type="text/javascript" src="https://pl32138751.profitableratecpmnetwork.com/23/9c/9f/239c9f7331d72f15bdcaae548e54c5f5.js"></script>
 
-    const ADMIN_PASSWORD = "123"; // আপনার গোপন পাসওয়ার্ড
+  <script>
+    const ADMIN_PASSWORD = "123";
 
     function unlockAdminPanel() {
       const pass = prompt("অ্যাডমিন পাসওয়ার্ড দিন:");
@@ -558,7 +551,7 @@
       document.querySelectorAll('.delete-btn').forEach(el => el.style.display = 'none');
     }
 
-    // 1. Dynamic Time Banner & Date Logic
+    // Dynamic Time & Date Logic
     function updateHeaderInfo() {
       const now = new Date();
       const hour = now.getHours();
@@ -602,7 +595,7 @@
       }
     }
 
-    // 2. Live TV Switching Logic
+    // Live TV Logic
     const tvChannels = {
       jamuna: "https://www.youtube.com/embed/live_stream?channel=UCjH5l0jR3F-Wq8CjT5B4Xsw",
       dbc: "https://www.youtube.com/embed/live_stream?channel=UCp04-lI-mFj9Vn8Dk9D5uJg",
@@ -615,52 +608,93 @@
       btnElement.classList.add('active');
     }
 
-    // 3. Realtime Database Listeners (সবার স্ক্রিনে সাথে সাথে শো করবে)
-    function loadRealtimePosts() {
-      db.ref('posts').on('value', (snapshot) => {
-        const feed = document.getElementById('newsFeed');
-        feed.innerHTML = "";
-        const data = snapshot.val();
+    // Image Compression Logic
+    function previewAndCompressImage(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
 
-        if (data) {
-          const postsArray = Object.keys(data).map(key => ({
-            id: key,
-            ...data[key]
-          })).reverse(); // নতুন পোস্ট উপরে দেখাবে
+        reader.onload = function(e) {
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const maxWidth = 500;
+            const scaleSize = maxWidth / img.width;
+            canvas.width = maxWidth;
+            canvas.height = img.height * scaleSize;
 
-          postsArray.forEach(post => {
-            const shareLink = post.externalUrl || (window.location.origin + window.location.pathname + '#' + post.id);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            document.getElementById('postImageDataBase').value = canvas.toDataURL('image/jpeg', 0.5);
+          };
+        };
+        reader.readAsDataURL(file);
+      }
+    }
 
-            let linkHtml = "";
-            if (post.externalUrl) {
-              linkHtml = `
-                <div class="news-link-box">
-                  🔗 মূল লিংক: <a href="${post.externalUrl}" target="_blank" rel="noopener noreferrer">${post.externalUrl}</a>
-                </div>
-              `;
-            }
+    // Local Posts Storage Engine
+    function getStoredPosts() {
+      try {
+        const posts = localStorage.getItem('babuganj_news_final');
+        if (posts) return JSON.parse(posts);
+      } catch (e) {
+        console.error("Storage Error", e);
+      }
+      return [{
+        id: 'post-default',
+        title: 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট',
+        category: 'ফেসবুক খবর',
+        desc: 'স্থানীয় সংযোগ ব্যবস্থার উন্নয়নে নতুন ব্রিজের কাজ দ্রুত গতিতে এগিয়ে চলছে। বিস্তারিত জানতে লিংকে ক্লিক করুন।',
+        externalUrl: 'https://facebook.com',
+        imageSrc: 'https://picsum.photos/800/400?random=1'
+      }];
+    }
 
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            card.id = post.id;
-            card.innerHTML = `
-              <button class="delete-btn" onclick="deletePost('${post.id}')" style="display:none;">❌ মুছে ফেলুন</button>
-              <img src="${post.imageSrc}" class="news-img" alt="নিউজ ছবি">
-              <div class="news-content">
-                <span class="news-tag">${post.category}</span>
-                <div class="news-title">${post.title}</div>
-                <div class="news-desc">${post.desc}</div>
-                ${linkHtml}
-                <div class="share-buttons">
-                  <button class="share-btn btn-fb" onclick="sharePost('fb', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">Facebook</button>
-                  <button class="share-btn btn-wa" onclick="sharePost('wa', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">WhatsApp</button>
-                  <button class="share-btn btn-copy" onclick="copyPostLink('${shareLink}')">📋 কপি লিংক</button>
-                </div>
-              </div>
-            `;
-            feed.appendChild(card);
-          });
+    function savePostsToStorage(posts) {
+      try {
+        localStorage.setItem('babuganj_news_final', JSON.stringify(posts));
+      } catch (e) {
+        alert("মেমোরি ফুল হয়ে গেছে! নতুন পোস্ট সেভ করতে আগের কিছু পোস্ট মুছে ফেলুন।");
+      }
+    }
+
+    function renderPosts() {
+      const feed = document.getElementById('newsFeed');
+      feed.innerHTML = "";
+      const posts = getStoredPosts();
+
+      posts.forEach(post => {
+        const shareLink = post.externalUrl || (window.location.origin + window.location.pathname + '#' + post.id);
+
+        let linkHtml = "";
+        if (post.externalUrl) {
+          linkHtml = `
+            <div class="news-link-box">
+              🔗 মূল লিংক: <a href="${post.externalUrl}" target="_blank" rel="noopener noreferrer">${post.externalUrl}</a>
+            </div>
+          `;
         }
+
+        const card = document.createElement('div');
+        card.className = 'news-card';
+        card.id = post.id;
+        card.innerHTML = `
+          <button class="delete-btn" onclick="deletePost('${post.id}')">❌ মুছে ফেলুন</button>
+          <img src="${post.imageSrc}" class="news-img" alt="নিউজ ছবি">
+          <div class="news-content">
+            <span class="news-tag">${post.category}</span>
+            <div class="news-title">${post.title}</div>
+            <div class="news-desc">${post.desc}</div>
+            ${linkHtml}
+            <div class="share-buttons">
+              <button class="share-btn btn-fb" onclick="sharePost('fb', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">Facebook</button>
+              <button class="share-btn btn-wa" onclick="sharePost('wa', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">WhatsApp</button>
+              <button class="share-btn btn-copy" onclick="copyPostLink('${shareLink}')">📋 কপি লিংক</button>
+            </div>
+          </div>
+        `;
+        feed.appendChild(card);
       });
     }
 
@@ -671,36 +705,42 @@
       const category = document.getElementById('postCategory').value;
       const desc = document.getElementById('postDesc').value;
       const externalUrl = document.getElementById('postExternalUrl').value;
-      const imageUrl = document.getElementById('postImageUrl').value;
+      const imageSrc = document.getElementById('postImageDataBase').value;
 
-      const newPostId = 'post-' + Date.now();
+      if (!imageSrc) {
+        alert("দয়া করে প্রসেসিং শেষ হতে ২ সেকেন্ড অপেক্ষা করুন এবং আবার চেষ্টা করুন!");
+        return;
+      }
 
-      // Firebase ডাটাবেসে সেভ করা মাত্রই সবার স্ক্রিনে চলে যাবে
-      db.ref('posts/' + newPostId).set({
+      const newPost = {
+        id: 'post-' + Date.now(),
         title: title,
         category: category,
         desc: desc,
         externalUrl: externalUrl,
-        imageSrc: imageUrl
-      }, (error) => {
-        if (error) {
-          alert("পোস্ট করতে সমস্যা হয়েছে!");
-        } else {
-          alert("সফলভাবে পাবলিশ হয়েছে! এটি এখন সবার স্ক্রিনে লাইভ দেখা যাচ্ছে।");
-          document.getElementById('postForm').reset();
-        }
-      });
+        imageSrc: imageSrc
+      };
+
+      const posts = getStoredPosts();
+      posts.unshift(newPost);
+      savePostsToStorage(posts);
+      renderPosts();
+
+      document.getElementById('postForm').reset();
+      document.getElementById('postImageDataBase').value = "";
+      alert("সংবাদটি সফলভাবে প্রকাশিত ও স্ক্রিনে সেভ হয়েছে!");
     }
 
     function deletePost(id) {
       if (confirm("আপনি কি নিশ্চিত যে এই সংবাদটি মুছে ফেলতে চান?")) {
-        db.ref('posts/' + id).remove().then(() => {
-          alert("সংবাদটি মুছে ফেলা হয়েছে।");
-        });
+        let posts = getStoredPosts();
+        posts = posts.filter(p => p.id !== id);
+        savePostsToStorage(posts);
+        renderPosts();
       }
     }
 
-    // Share & Copy Logic
+    // Share Options
     function sharePost(platform, link, title) {
       const shareUrl = encodeURIComponent(link);
       const shareText = encodeURIComponent(title);
@@ -724,7 +764,8 @@
 
     // Initialize Page
     updateHeaderInfo();
-    loadRealtimePosts();
+    renderPosts();
   </script>
 </body>
 </html>
+    
