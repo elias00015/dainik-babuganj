@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>বাবুগঞ্জ বার্তা - সত্য ও সাহসের সাথে</title>
+  
+  <!-- Firebase SDK লাইব্রেরি সংযুক্ত করা হলো, যা সবার ফোনে এক সাথে নিউজ লাইভ দেখাবে -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
   <style>
     :root {
       --primary: #c8102e;
@@ -105,7 +110,7 @@
       font-size: 1rem;
     }
 
-    /* Hidden Admin Trigger Button (Small Key Icon at top) */
+    /* Hidden Admin Trigger Button */
     .admin-login-trigger {
       position: absolute;
       top: 15px;
@@ -215,7 +220,7 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       margin-bottom: 25px;
-      display: none; /* সাধারণ দর্শকদের জন্য সম্পূর্ণ লুকিয়ে থাকবে */
+      display: none; 
       border: 2px dashed var(--primary);
     }
 
@@ -286,7 +291,6 @@
       position: relative;
     }
 
-    /* Delete button will only show when Admin mode is unlocked */
     .delete-btn {
       position: absolute;
       top: 10px;
@@ -422,7 +426,6 @@
 
   <!-- Site Title -->
   <header class="brand-header">
-    <!-- গোপন অ্যাডমিন বাটন (এখানে ক্লিক করে পাসওয়ার্ড দিলে তবেই পোস্ট ফর্ম আসবে) -->
     <button class="admin-login-trigger" onclick="unlockAdminPanel()">⚙️ অ্যাডমিন লগইন</button>
     <h1>বাবুগঞ্জ বার্তা</h1>
     <p>সত্য ও সঠিক সংবাদের বিশ্বাসযোগ্য ঠিকানা</p>
@@ -458,7 +461,7 @@
       </div>
     </section>
 
-    <!-- Post Upload Section (Hidden for visitors, opens with Password) -->
+    <!-- Post Upload Section (Hidden for visitors) -->
     <div class="post-form-card" id="adminPostForm">
       <h3>
         <span>➕ নতুন খবর প্রকাশ করুন (অ্যাডমিন প্যানেল)</span>
@@ -486,9 +489,8 @@
         </div>
 
         <div class="form-group">
-          <label>ছবি (গ্যালারি ফাইল বা ছবির লিংক)</label>
-          <input type="file" id="postImageFile" accept="image/*" onchange="previewAndCompressImage(this)">
-          <input type="url" id="postImageUrl" placeholder="অথবা ছবির লিংক (URL) দিন..." style="margin-top: 6px;">
+          <label>ছবি (ছবির লিংক বা URL দিন - সরাসরি লাইভ দেখার জন্য)</label>
+          <input type="url" id="postImageUrl" placeholder="https://example.com/image.jpg" required style="margin-top: 6px;">
         </div>
 
         <div class="form-group">
@@ -496,7 +498,7 @@
           <textarea id="postDesc" rows="4" placeholder="বিস্তারিত সংবাদ লিখুন..." required></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">পাবলিশ করুন</button>
+        <button type="submit" class="btn-submit">সবার স্ক্রিনে পাবলিশ করুন</button>
       </form>
     </div>
 
@@ -518,7 +520,7 @@
     <h3 style="margin: 20px 0 15px 0; border-left: 4px solid var(--primary); padding-left: 8px;">সর্বশেষ সংবাদসমূহ</h3>
     
     <div class="news-feed" id="newsFeed">
-      <!-- Posts will load dynamically -->
+      <!-- রিয়েলটাইম নিউজ লোড হবে -->
     </div>
 
   </div>
@@ -531,14 +533,19 @@
   </footer>
 
   <script>
-    // আপনার গোপন পাসওয়ার্ড এখানে সেট করা আছে (আপনি চাইলে এটি পরিবর্তন করে নিতে পারেন, যেমন: 'babuganj123')
-    const ADMIN_PASSWORD = "123"; 
+    // --- FIREBASE CONFIGURATION (সবার স্ক্রিনে লাইভ দেখানোর জন্য ক্লাউড ডেটাবেস) ---
+    const firebaseConfig = {
+      databaseURL: "https://babuganj-vartaa-default-rtdb.firebaseio.com/" // আপনার ফ্রি রিয়েলটাইম ডেটাবেস লিংক
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const ADMIN_PASSWORD = "123"; // আপনার গোপন পাসওয়ার্ড
 
     function unlockAdminPanel() {
       const pass = prompt("অ্যাডমিন পাসওয়ার্ড দিন:");
       if (pass === ADMIN_PASSWORD) {
         document.getElementById('adminPostForm').style.display = 'block';
-        // অ্যাডমিন মোড অন হলে ডিলিট বাটনগুলো ভিজিবল হবে
         document.querySelectorAll('.delete-btn').forEach(el => el.style.display = 'block');
         alert("অ্যাডমিন প্যানেল সফলভাবে আনলক হয়েছে!");
       } else if (pass !== null) {
@@ -573,7 +580,6 @@
         greetingHeader.style.background = "linear-gradient(135deg, #1e1b4b, #312e81)";
       }
 
-      // Dates
       const engOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       document.getElementById('engDate').innerText = now.toLocaleDateString('en-US', engOptions);
 
@@ -609,95 +615,52 @@
       btnElement.classList.add('active');
     }
 
-    // 3. Image Compression Logic
-    let uploadedImageBase64 = "";
+    // 3. Realtime Database Listeners (সবার স্ক্রিনে সাথে সাথে শো করবে)
+    function loadRealtimePosts() {
+      db.ref('posts').on('value', (snapshot) => {
+        const feed = document.getElementById('newsFeed');
+        feed.innerHTML = "";
+        const data = snapshot.val();
 
-    function previewAndCompressImage(input) {
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const reader = new FileReader();
+        if (data) {
+          const postsArray = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          })).reverse(); // নতুন পোস্ট উপরে দেখাবে
 
-        reader.onload = function(e) {
-          const img = new Image();
-          img.src = e.target.result;
-          img.onload = function() {
-            const canvas = document.createElement('canvas');
-            const maxWidth = 600;
-            const scaleSize = maxWidth / img.width;
-            canvas.width = maxWidth;
-            canvas.height = img.height * scaleSize;
+          postsArray.forEach(post => {
+            const shareLink = post.externalUrl || (window.location.origin + window.location.pathname + '#' + post.id);
 
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            uploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
-          };
-        };
-        reader.readAsDataURL(file);
-      }
-    }
+            let linkHtml = "";
+            if (post.externalUrl) {
+              linkHtml = `
+                <div class="news-link-box">
+                  🔗 মূল লিংক: <a href="${post.externalUrl}" target="_blank" rel="noopener noreferrer">${post.externalUrl}</a>
+                </div>
+              `;
+            }
 
-    // 4. Safe Local Storage System
-    function getStoredPosts() {
-      try {
-        const posts = localStorage.getItem('babuganj_news_posts_v2');
-        if (posts) return JSON.parse(posts);
-      } catch (e) {
-        console.error("Storage Error", e);
-      }
-      return [{
-        id: 'post-default',
-        title: 'বাবুগঞ্জে নতুন সেতু উদ্বোধনের তাজা আপডেট',
-        category: 'ফেসবুক খবর',
-        desc: 'স্থানীয় সংযোগ ব্যবস্থার উন্নয়নে নতুন ব্রিজের কাজ দ্রুত গতিতে এগিয়ে চলছে। আরও বিস্তারিত সংবাদ জানতে নিচের যুক্ত করা ফেসবুক পোস্টে ক্লিক করুন।',
-        externalUrl: 'https://facebook.com',
-        imageSrc: 'https://picsum.photos/800/400?random=1'
-      }];
-    }
-
-    function savePostsToStorage(posts) {
-      try {
-        localStorage.setItem('babuganj_news_posts_v2', JSON.stringify(posts));
-      } catch (e) {
-        alert("স্টোরেজ লিমিট পার হয়েছে! কিছু পুরনো পোস্ট মুছে আবার নতুন পোস্ট করুন।");
-      }
-    }
-
-    function renderPosts() {
-      const feed = document.getElementById('newsFeed');
-      feed.innerHTML = "";
-      const posts = getStoredPosts();
-
-      posts.forEach(post => {
-        const shareLink = post.externalUrl || (window.location.origin + window.location.pathname + '#' + post.id);
-
-        let linkHtml = "";
-        if (post.externalUrl) {
-          linkHtml = `
-            <div class="news-link-box">
-              🔗 মূল লিংক: <a href="${post.externalUrl}" target="_blank" rel="noopener noreferrer">${post.externalUrl}</a>
-            </div>
-          `;
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            card.id = post.id;
+            card.innerHTML = `
+              <button class="delete-btn" onclick="deletePost('${post.id}')" style="display:none;">❌ মুছে ফেলুন</button>
+              <img src="${post.imageSrc}" class="news-img" alt="নিউজ ছবি">
+              <div class="news-content">
+                <span class="news-tag">${post.category}</span>
+                <div class="news-title">${post.title}</div>
+                <div class="news-desc">${post.desc}</div>
+                ${linkHtml}
+                <div class="share-buttons">
+                  <button class="share-btn btn-fb" onclick="sharePost('fb', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">Facebook</button>
+                  <button class="share-btn btn-wa" onclick="sharePost('wa', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">WhatsApp</button>
+                  <button class="share-btn btn-copy" onclick="copyPostLink('${shareLink}')">📋 কপি লিংক</button>
+                </div>
+              </div>
+            `;
+            feed.appendChild(card);
+          });
         }
-
-        const card = document.createElement('div');
-        card.className = 'news-card';
-        card.id = post.id;
-        card.innerHTML = `
-          <button class="delete-btn" onclick="deletePost('${post.id}')">❌ মুছে ফেলুন</button>
-          <img src="${post.imageSrc}" class="news-img" alt="নিউজ ছবি">
-          <div class="news-content">
-            <span class="news-tag">${post.category}</span>
-            <div class="news-title">${post.title}</div>
-            <div class="news-desc">${post.desc}</div>
-            ${linkHtml}
-            <div class="share-buttons">
-              <button class="share-btn btn-fb" onclick="sharePost('fb', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">Facebook</button>
-              <button class="share-btn btn-wa" onclick="sharePost('wa', '${shareLink}', '${post.title.replace(/'/g, "\\'")}')">WhatsApp</button>
-              <button class="share-btn btn-copy" onclick="copyPostLink('${shareLink}')">📋 কপি লিংক</button>
-            </div>
-          </div>
-        `;
-        feed.appendChild(card);
       });
     }
 
@@ -708,39 +671,36 @@
       const category = document.getElementById('postCategory').value;
       const desc = document.getElementById('postDesc').value;
       const externalUrl = document.getElementById('postExternalUrl').value;
-      const imageUrlInput = document.getElementById('postImageUrl').value;
+      const imageUrl = document.getElementById('postImageUrl').value;
 
-      let finalImgSrc = uploadedImageBase64 || imageUrlInput || "https://picsum.photos/800/400?random=" + Math.floor(Math.random() * 100);
+      const newPostId = 'post-' + Date.now();
 
-      const newPost = {
-        id: 'post-' + Date.now(),
+      // Firebase ডাটাবেসে সেভ করা মাত্রই সবার স্ক্রিনে চলে যাবে
+      db.ref('posts/' + newPostId).set({
         title: title,
         category: category,
         desc: desc,
         externalUrl: externalUrl,
-        imageSrc: finalImgSrc
-      };
-
-      const posts = getStoredPosts();
-      posts.unshift(newPost);
-      savePostsToStorage(posts);
-      renderPosts();
-
-      document.getElementById('postForm').reset();
-      uploadedImageBase64 = "";
-      alert("সংবাদটি সফলভাবে প্রকাশিত হয়েছে!");
+        imageSrc: imageUrl
+      }, (error) => {
+        if (error) {
+          alert("পোস্ট করতে সমস্যা হয়েছে!");
+        } else {
+          alert("সফলভাবে পাবলিশ হয়েছে! এটি এখন সবার স্ক্রিনে লাইভ দেখা যাচ্ছে।");
+          document.getElementById('postForm').reset();
+        }
+      });
     }
 
     function deletePost(id) {
       if (confirm("আপনি কি নিশ্চিত যে এই সংবাদটি মুছে ফেলতে চান?")) {
-        let posts = getStoredPosts();
-        posts = posts.filter(p => p.id !== id);
-        savePostsToStorage(posts);
-        renderPosts();
+        db.ref('posts/' + id).remove().then(() => {
+          alert("সংবাদটি মুছে ফেলা হয়েছে।");
+        });
       }
     }
 
-    // 5. Public Share & Copy Logic
+    // Share & Copy Logic
     function sharePost(platform, link, title) {
       const shareUrl = encodeURIComponent(link);
       const shareText = encodeURIComponent(title);
@@ -764,7 +724,7 @@
 
     // Initialize Page
     updateHeaderInfo();
-    renderPosts();
+    loadRealtimePosts();
   </script>
 </body>
 </html>
