@@ -91,6 +91,7 @@
       padding: 20px 0;
       text-align: center;
       border-bottom: 2px solid var(--primary);
+      position: relative;
     }
 
     .brand-header h1 {
@@ -102,6 +103,20 @@
     .brand-header p {
       color: #6b7280;
       font-size: 1rem;
+    }
+
+    /* Hidden Admin Trigger Button (Small Key Icon at top) */
+    .admin-login-trigger {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: #374151;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
     }
 
     /* Navigation */
@@ -193,13 +208,15 @@
       border-radius: 4px;
     }
 
-    /* News Post Form */
+    /* News Post Form (Hidden by default for visitors) */
     .post-form-card {
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       margin-bottom: 25px;
+      display: none; /* সাধারণ দর্শকদের জন্য সম্পূর্ণ লুকিয়ে থাকবে */
+      border: 2px dashed var(--primary);
     }
 
     .post-form-card h3 {
@@ -207,6 +224,19 @@
       color: var(--dark);
       border-left: 4px solid var(--primary);
       padding-left: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-admin-btn {
+      background: #6b7280;
+      color: white;
+      border: none;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      border-radius: 3px;
+      cursor: pointer;
     }
 
     .form-group {
@@ -256,11 +286,12 @@
       position: relative;
     }
 
+    /* Delete button will only show when Admin mode is unlocked */
     .delete-btn {
       position: absolute;
       top: 10px;
       right: 10px;
-      background: rgba(200, 16, 46, 0.85);
+      background: rgba(200, 16, 46, 0.9);
       color: white;
       border: none;
       padding: 4px 10px;
@@ -268,10 +299,7 @@
       cursor: pointer;
       font-size: 0.8rem;
       font-weight: bold;
-    }
-
-    .delete-btn:hover {
-      background: var(--primary);
+      display: none; 
     }
 
     .news-img {
@@ -394,6 +422,8 @@
 
   <!-- Site Title -->
   <header class="brand-header">
+    <!-- গোপন অ্যাডমিন বাটন (এখানে ক্লিক করে পাসওয়ার্ড দিলে তবেই পোস্ট ফর্ম আসবে) -->
+    <button class="admin-login-trigger" onclick="unlockAdminPanel()">⚙️ অ্যাডমিন লগইন</button>
     <h1>বাবুগঞ্জ বার্তা</h1>
     <p>সত্য ও সঠিক সংবাদের বিশ্বাসযোগ্য ঠিকানা</p>
   </header>
@@ -428,9 +458,12 @@
       </div>
     </section>
 
-    <!-- Post Upload Section (Centered) -->
-    <div class="post-form-card">
-      <h3>➕ নতুন খবর প্রকাশ করুন</h3>
+    <!-- Post Upload Section (Hidden for visitors, opens with Password) -->
+    <div class="post-form-card" id="adminPostForm">
+      <h3>
+        <span>➕ নতুন খবর প্রকাশ করুন (অ্যাডমিন প্যানেল)</span>
+        <button class="close-admin-btn" onclick="lockAdminPanel()">লুকিয়ে ফেলুন</button>
+      </h3>
       <form id="postForm" onsubmit="handlePostSubmit(event)">
         <div class="form-group">
           <label>সংবাদের শিরোনাম</label>
@@ -447,7 +480,6 @@
           </select>
         </div>
         
-        <!-- External / Facebook Link Input -->
         <div class="form-group">
           <label>ফেসবুক বা ওয়েবসাইটের লিংক (অপশনাল)</label>
           <input type="url" id="postExternalUrl" placeholder="https://facebook.com/post/...">
@@ -499,6 +531,26 @@
   </footer>
 
   <script>
+    // আপনার গোপন পাসওয়ার্ড এখানে সেট করা আছে (আপনি চাইলে এটি পরিবর্তন করে নিতে পারেন, যেমন: 'babuganj123')
+    const ADMIN_PASSWORD = "123"; 
+
+    function unlockAdminPanel() {
+      const pass = prompt("অ্যাডমিন পাসওয়ার্ড দিন:");
+      if (pass === ADMIN_PASSWORD) {
+        document.getElementById('adminPostForm').style.display = 'block';
+        // অ্যাডমিন মোড অন হলে ডিলিট বাটনগুলো ভিজিবল হবে
+        document.querySelectorAll('.delete-btn').forEach(el => el.style.display = 'block');
+        alert("অ্যাডমিন প্যানেল সফলভাবে আনলক হয়েছে!");
+      } else if (pass !== null) {
+        alert("ভুল পাসওয়ার্ড!");
+      }
+    }
+
+    function lockAdminPanel() {
+      document.getElementById('adminPostForm').style.display = 'none';
+      document.querySelectorAll('.delete-btn').forEach(el => el.style.display = 'none');
+    }
+
     // 1. Dynamic Time Banner & Date Logic
     function updateHeaderInfo() {
       const now = new Date();
@@ -557,7 +609,7 @@
       btnElement.classList.add('active');
     }
 
-    // 3. Image Compression Logic (Prevents Storage Overload)
+    // 3. Image Compression Logic
     let uploadedImageBase64 = "";
 
     function previewAndCompressImage(input) {
@@ -569,7 +621,6 @@
           const img = new Image();
           img.src = e.target.result;
           img.onload = function() {
-            // Compress Image size using Canvas
             const canvas = document.createElement('canvas');
             const maxWidth = 600;
             const scaleSize = maxWidth / img.width;
@@ -578,8 +629,6 @@
 
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-            // Compress to JPEG with 0.6 quality
             uploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
           };
         };
@@ -609,7 +658,7 @@
       try {
         localStorage.setItem('babuganj_news_posts_v2', JSON.stringify(posts));
       } catch (e) {
-        alert("স্টোরেজ লিমিট পার হয়েছে! কিছু পুরনো পোস্ট মুছে আবার নতুন পোস্ট করার চেষ্টা করুন।");
+        alert("স্টোরেজ লিমিট পার হয়েছে! কিছু পুরনো পোস্ট মুছে আবার নতুন পোস্ট করুন।");
       }
     }
 
@@ -679,7 +728,7 @@
 
       document.getElementById('postForm').reset();
       uploadedImageBase64 = "";
-      alert("সংবাদটি স্থায়ীভাবে সেভ হয়েছে! পেজ রিফ্রেশ দিলেও এটি মুছে যাবে না।");
+      alert("সংবাদটি সফলভাবে প্রকাশিত হয়েছে!");
     }
 
     function deletePost(id) {
